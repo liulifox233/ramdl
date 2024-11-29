@@ -1,3 +1,5 @@
+//! the error handling functions.
+
 use thiserror::Error;
 use tokio::task::JoinError;
 
@@ -5,6 +7,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Error, Debug)]
 pub enum Error {
+    /// An error occurred while fetching.
     #[error("An error occurred while fetching: {0}")]
     Reqwest(#[from] reqwest::Error),
     /// An error occurred while parsing JSON.

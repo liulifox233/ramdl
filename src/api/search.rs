@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct SearchResults {
     pub songs: Vec<Song>,
     pub albums: Vec<Album>,
@@ -6,14 +6,14 @@ pub struct SearchResults {
     pub playlists: Vec<Playlist>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Song {
     pub id: String,
     pub href: String,
     pub attributes: SongAttributes,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct SongAttributes {
     pub has_time_synced_lyrics: bool,
@@ -38,8 +38,7 @@ pub struct SongAttributes {
     pub previews: Vec<Preview>,
     pub artist_name: String,
 }
-
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Artwork {
     pub width: u32,
@@ -53,25 +52,25 @@ pub struct Artwork {
     pub has_p3: bool,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct PlayParams {
     pub id: String,
     pub kind: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Preview {
     pub url: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Album {
     pub id: String,
     pub href: String,
     pub attributes: AlbumAttributes,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbumAttributes {
     pub copyright: String,
@@ -93,14 +92,14 @@ pub struct AlbumAttributes {
     pub is_complete: bool,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Playlist {
     pub id: String,
     pub href: String,
     pub attributes: PlaylistAttributes,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct PlaylistAttributes {
     pub last_modified_date: String,
@@ -118,20 +117,20 @@ pub struct PlaylistAttributes {
     pub editorial_notes: EditorialNotes,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Description {
     pub standard: String,
     pub short: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct EditorialNotes {
     pub name: String,
     pub standard: String,
     pub short: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Artist {
     pub id: String,
     pub href: String,
@@ -139,7 +138,7 @@ pub struct Artist {
     pub relationships: ArtistRelationships,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct ArtistAttributes {
     pub name: String,
@@ -148,19 +147,19 @@ pub struct ArtistAttributes {
     pub url: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ArtistRelationships {
     pub albums: AlbumsRelationship,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct AlbumsRelationship {
     pub href: String,
     pub next: Option<String>,
     pub data: Vec<AlbumReference>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct AlbumReference {
     pub id: String,
     #[serde(rename = "type")]
@@ -178,7 +177,6 @@ mod tests {
         let apple_music = AppleMusicDownloader::new_with_media_user_token(&media_user_token)
             .await
             .unwrap();
-        let search_results = apple_music.search("サイレンは彼方より").await.unwrap();
-        println!("{:?}", search_results);
+        apple_music.search("サイレンは彼方より").await.unwrap();
     }
 }

@@ -1,3 +1,3 @@
 # Device file
 
-Come from [gamdl](https://github.com/glomatico/gamdl)
+Comes from [gamdl](https://github.com/glomatico/gamdl)

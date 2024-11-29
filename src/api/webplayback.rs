@@ -1,11 +1,11 @@
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct WebPlayBack {
     pub song_list: Vec<Song>,
     pub status: u8,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Song {
     #[serde(rename = "artwork-urls")]
@@ -22,7 +22,7 @@ pub struct Song {
     pub widevine_cert_url: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Asset {
     #[serde(rename = "URL")]
@@ -38,13 +38,13 @@ pub struct Asset {
     pub metadata: Metadata,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Chunks {
     pub chunk_size: u64,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Metadata {
     pub artist_id: String,
@@ -88,7 +88,7 @@ pub struct Metadata {
     pub year: u32,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ArtworkUrls {
     pub default: ArtWorkUrlDefault,
     #[serde(rename = "default@2x")]
@@ -97,12 +97,12 @@ pub struct ArtworkUrls {
     pub image_type: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ArtWorkUrlDefault {
     pub url: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ArtWorkUrlDefaultx2 {
     pub url: String,
 }

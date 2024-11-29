@@ -1,3 +1,5 @@
+//! Rust Apple Music Downloader.
+
 pub mod api;
 pub mod decrypter;
 pub mod error;
@@ -14,13 +16,19 @@ use lyrics::Lyrics;
 use search;
 use songs::Song;
 
+/// <https://beta.music.apple.com>
 pub const APPLE_MUSIC_HOMEPAGE_URL: &str = "https://beta.music.apple.com";
+/// <https://amp-api.music.apple.com>
 pub const AMP_API_URL: &str = "https://amp-api.music.apple.com";
+/// <https://play.itunes.apple.com/WebObjects/MZPlay.woa/wa/webPlayback>
 pub const WEBPLAYBACK_API_URL: &str =
     "https://play.itunes.apple.com/WebObjects/MZPlay.woa/wa/webPlayback";
+/// <https://play.itunes.apple.com/WebObjects/MZPlay.woa/wa/acquireWebPlaybackLicense>
 pub const LICENSE_API_URL: &str =
     "https://play.itunes.apple.com/WebObjects/MZPlay.woa/wa/acquireWebPlaybackLicense";
 
+/// The Apple Music downloader struct.
+#[derive(Debug, Clone)]
 pub struct AppleMusicDownloader {
     media_user_token: String,
     store_front: String,
@@ -42,6 +50,12 @@ impl Default for AppleMusicDownloader {
 }
 
 impl AppleMusicDownloader {
+    /// Creates a new `AppleMusicDownloader` instance with the provided media user token, store front, and language.
+    /// # Examples
+    /// ```rust
+    /// # use ramdl::AppleMusicDownloader;
+    /// let apple_music = AppleMusicDownloader::new("Asc+xxx", "us", "en-US");
+    /// ```
     pub fn new(media_user_token: &str, store_front: &str, language: &str) -> Self {
         Self {
             media_user_token: media_user_token.to_string(),
@@ -51,6 +65,12 @@ impl AppleMusicDownloader {
         }
     }
 
+    /// Creates a new `AppleMusicDownloader` instance with the provided media user token. This function will automatically get the store front and language from the Apple Music API.
+    /// # Examples
+    /// ```rust
+    /// # use ramdl::AppleMusicDownloader;
+    /// let apple_music = AppleMusicDownloader::new_with_media_user_token("Asc+xxx");
+    /// ```
     pub async fn new_with_media_user_token(media_user_token: &str) -> Result<Self> {
         let mut apple_music = AppleMusicDownloader {
             media_user_token: media_user_token.to_string(),
@@ -60,6 +80,7 @@ impl AppleMusicDownloader {
         Ok(apple_music)
     }
 
+    // Initializes the Apple Music downloader.
     async fn init(&mut self) -> Result<()> {
         self.init_session().await?;
         self.init_headers().await?;
@@ -67,6 +88,7 @@ impl AppleMusicDownloader {
         Ok(())
     }
 
+    // Initializes the Apple Music session.
     async fn init_session(&mut self) -> Result<()> {
         let home_page = self
             .client
@@ -102,6 +124,7 @@ impl AppleMusicDownloader {
         Ok(())
     }
 
+    // Initializes the request headers.
     async fn init_headers(&mut self) -> Result<()> {
         self.headers.insert(
             reqwest::header::USER_AGENT,
@@ -129,6 +152,7 @@ impl AppleMusicDownloader {
         Ok(())
     }
 
+    // Initializes the storefront and language.
     async fn init_storefront_language(&mut self) -> Result<()> {
         let res = self
             .client
@@ -145,6 +169,14 @@ impl AppleMusicDownloader {
         Ok(())
     }
 
+    /// Gets the song information.
+    /// # Examples
+    /// ```rust
+    /// # use ramdl::AppleMusicDownloader;
+    /// # let media_user_token = std::env::var("MEDIA_USER_TOKEN").unwrap();
+    /// # let apple_music = AppleMusicDownloader::new_with_media_user_token(&media_user_token).await.unwrap();
+    /// let song = apple_music.get_songs("1753050648").await.unwrap();
+    /// ```
     pub async fn get_songs(&self, song_id: &str) -> Result<Song> {
         let store_front = self.store_front.clone();
         let res = self
@@ -160,6 +192,14 @@ impl AppleMusicDownloader {
         Ok(song)
     }
 
+    /// Gets the lyrics information.
+    /// # Examples
+    /// ```rust
+    /// # use ramdl::AppleMusicDownloader;
+    /// # let media_user_token = std::env::var("MEDIA_USER_TOKEN").unwrap();
+    /// # let apple_music = AppleMusicDownloader::new_with_media_user_token(&media_user_token).await.unwrap();
+    /// let lyrics = apple_music.get_lyrics("1753050648").await.unwrap();
+    /// ```
     pub async fn get_lyrics(&self, song_id: &str) -> Result<Vec<Option<Lyrics>>> {
         let store_front = self.store_front.clone();
         let res = self
@@ -178,6 +218,14 @@ impl AppleMusicDownloader {
         Ok(vec![lyrics, syllable_lyrics])
     }
 
+    /// Searches for songs, albums, artists, and playlists.
+    /// # Examples
+    /// ```rust
+    /// # use ramdl::AppleMusicDownloader;
+    /// # let media_user_token = std::env::var("MEDIA_USER_TOKEN").unwrap();
+    /// # let apple_music = AppleMusicDownloader::new_with_media_user_token(&media_user_token).await.unwrap();
+    /// let search_results = apple_music.search("サイレンは彼方より").await.unwrap();
+    /// ```
     pub async fn search(&self, query: &str) -> Result<search::SearchResults> {
         let store_front = self.store_front.clone();
         let res = self
@@ -205,6 +253,7 @@ impl AppleMusicDownloader {
         })
     }
 
+    /// Gets the Widevine license.
     pub async fn get_widevine_license(
         &self,
         track_id: &str,
@@ -238,6 +287,7 @@ impl AppleMusicDownloader {
         Err(Error::Init("Failed to get Widevine license".to_string()))
     }
 
+    /// Gets the WebPlayback information.
     pub async fn get_webplayback(&self, track_id: &str) -> Result<webplayback::WebPlayBack> {
         let response = self
             .client
@@ -271,7 +321,7 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_new() {
+    async fn get_decrypt_key() {
         let media_user_token = std::env::var("MEDIA_USER_TOKEN").unwrap();
         let apple_music_downloader =
             AppleMusicDownloader::new_with_media_user_token(&media_user_token)

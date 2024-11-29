@@ -1,10 +1,10 @@
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Lyrics {
     pub href: String,
     pub data: Vec<LyricData>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct LyricData {
     pub id: String,
     #[serde(rename = "type")]
@@ -12,14 +12,14 @@ pub struct LyricData {
     pub attributes: LyricAttributes,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct LyricAttributes {
     pub ttml: String,
     pub play_params: PlayParams,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct PlayParams {
     pub id: String,
@@ -39,7 +39,5 @@ mod tests {
             .await
             .unwrap();
         let lyrics = apple_music.get_lyrics("1428083880").await.unwrap();
-
-        println!("{:#?}", lyrics);
     }
 }

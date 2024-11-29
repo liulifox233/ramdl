@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Song {
     pub id: String,
@@ -10,7 +10,7 @@ pub struct Song {
     pub meta: Meta,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Artwork {
     pub width: u32,
@@ -24,7 +24,7 @@ pub struct Artwork {
     pub has_p3: bool,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Attributes {
     pub album_name: String,
@@ -51,18 +51,18 @@ pub struct Attributes {
     pub extended_asset_urls: ExtendedAssetUrls,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct PlayParams {
     pub id: String,
     pub kind: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Preview {
     pub url: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct ExtendedAssetUrls {
     pub plus: String,
@@ -72,19 +72,19 @@ pub struct ExtendedAssetUrls {
     pub enhanced_hls: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Relationships {
     pub albums: RelationshipData,
     pub artists: RelationshipData,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct RelationshipData {
     pub href: String,
     pub data: Vec<RelationshipItem>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct RelationshipItem {
     pub id: String,
     #[serde(rename = "type")]
@@ -92,12 +92,12 @@ pub struct RelationshipItem {
     pub href: String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Meta {
     pub content_version: Option<ContentVersion>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ContentVersion {
     pub rtci: u64,
     pub mz_indexer: u64,
