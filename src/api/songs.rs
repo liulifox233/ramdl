@@ -1,14 +1,19 @@
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Song {
+    /// The identifier for the song.
     pub id: String,
+    /// This value is always songs.
     #[serde(rename = "type")]
     pub type_: String,
+    /// The relative location for the song resource.
     pub href: String,
+    /// The attributes for the song.
     pub attributes: Attributes,
-    /// The relationships for a song resource.
+    /// The relationships for the song.
     pub relationships: Relationships,
-    pub meta: Meta,
+    /// Information about the request or response.
+    pub meta: Option<Meta>,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
@@ -32,10 +37,21 @@ pub struct Attributes {
     pub album_name: Option<String>,
     /// The artist’s name.
     pub artist_name: String,
+    /// The URL of the artist for the content.
+    pub artist_url: Option<String>,
     /// The album artwork.
     pub artwork: Artwork,
+    /// (Classical music only) The name of the artist or composer to attribute the song with.
+    pub attribution: Option<String>,
+    /// (Extended) Indicates the specific audio variant for a song.
+    /// Possible Values: dolby-atmos, dolby-audio, hi-res-lossless, lossless, lossy-stereo
+    /// ## Important
+    /// Use badges to indicate the audio variant in Apple Music. For more information, see Dolby Asset Center (DAC) for identifying tracks with the Dolby Atmos logo and Apple Lossless glyphs for identifying tracks with the specific Apple Lossless glyph.
+    pub audio_variants: Option<Vec<String>>,
+    /// The song’s composer.
+    pub composer_name: Option<String>,
     /// The Recording Industry Association of America (RIAA) rating of the content. The possible values for this rating are clean and explicit. No value means no rating.
-    pub content_rating: String,
+    pub content_rating: Option<String>,
     /// The disc number the song appears on.
     pub disc_number: u32,
     /// The approximate length of the song in milliseconds.
@@ -73,7 +89,7 @@ pub struct Attributes {
     pub has_time_synced_lyrics: Option<bool>,
     pub is_vocal_attenuation_allowed: bool,
     pub is_mastered_for_itunes: bool,
-    pub composer_name: Option<String>,
+
     pub audio_locale: Option<String>,
     pub audio_traits: Option<Vec<String>>,
     pub extended_asset_urls: Option<ExtendedAssetUrls>,
@@ -165,6 +181,7 @@ mod tests {
             .await
             .unwrap();
         let song = apple_music.get_songs("1214782673").await.unwrap();
+        println!("{:?}", song);
         assert_eq!(
             song.attributes.name,
             "サイレンは彼方より (feat. Hatsune Miku)"

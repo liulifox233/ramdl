@@ -1,6 +1,6 @@
 [package]
 name = "ramdl"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "A Rust library for downloading Apple Music songs/music videos/posts"
