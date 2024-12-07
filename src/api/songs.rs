@@ -1,6 +1,11 @@
+use super::artwork::Artwork;
+use super::editorial_notes::EditorialNotes;
+use super::play_parameters::PlayParameters;
+use super::previews::Preview;
+
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct Song {
+pub struct Songs {
     /// The identifier for the song.
     pub id: String,
     /// This value is always songs.
@@ -14,20 +19,6 @@ pub struct Song {
     pub relationships: Relationships,
     /// Information about the request or response.
     pub meta: Option<Meta>,
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct Artwork {
-    pub width: u32,
-    pub url: String,
-    pub height: u32,
-    pub text_color3: String,
-    pub text_color2: String,
-    pub text_color4: String,
-    pub text_color1: String,
-    pub bg_color: String,
-    pub has_p3: bool,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
@@ -75,7 +66,7 @@ pub struct Attributes {
     /// The localized name of the song.
     pub name: String,
     /// When present, this attribute indicates that the song is available to play with an Apple Music subscription. The value map may be used to initiate playback. Previews of the song audio may be available with or without an Apple Music subscription.
-    pub play_params: Option<PlayParams>,
+    pub play_params: Option<PlayParameters>,
     /// The preview assets for the song.
     pub previews: Vec<Preview>,
     /// The release date of the song, when known, in YYYY-MM-DD or YYYY format. Prerelease songs may have an expected release date in the future.
@@ -93,37 +84,6 @@ pub struct Attributes {
     pub audio_locale: Option<String>,
     pub audio_traits: Option<Vec<String>>,
     pub extended_asset_urls: Option<ExtendedAssetUrls>,
-}
-
-/// An object that represents a notes attribute.
-/// ## Discussion
-/// Notes may include XML tags for formatting (&lt;b&gt; for bold, &lt;i&gt; for italic, or &lt;br&gt; for line break) and special characters (&amp;amp; for &, &amp;lt; for <, &amp;gt; for >, &amp;apos; for ‘, and &amp;quot; for “).
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
-pub struct EditorialNotes {
-    /// Abbreviated notes shown inline or when the content appears alongside other content.
-    pub short: Option<String>,
-    /// Notes shown when the content is prominently displayed.
-    pub standard: Option<String>,
-    /// Name for the editorial notes.
-    pub name: Option<String>,
-    /// The tag line for the editorial notes.
-    pub tagline: Option<String>,
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
-pub struct PlayParams {
-    /// The ID of the content to use for playback.
-    pub id: String,
-    /// The kind of the content to use for playback.
-    pub kind: String,
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct Preview {
-    pub artwork: Option<Artwork>,
-    pub url: String,
-    pub hls_url: Option<String>,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]

@@ -14,7 +14,7 @@ use serde_json::json;
 
 use lyrics::Lyrics;
 use search;
-use songs::Song;
+use songs::Songs;
 use stream_info::StreamInfo;
 
 /// <https://beta.music.apple.com>
@@ -176,7 +176,7 @@ impl AppleMusicDownloader {
     }
 
     /// Gets the song information.
-    pub async fn get_songs(&self, song_id: &str) -> Result<Song> {
+    pub async fn get_songs(&self, song_id: &str) -> Result<Songs> {
         let store_front = self.store_front.clone();
         let res = self
             .client
@@ -187,7 +187,7 @@ impl AppleMusicDownloader {
             .await?
             .json::<serde_json::Value>()
             .await?;
-        let song: Song = serde_json::from_value(res["data"][0].clone())?;
+        let song: Songs = serde_json::from_value(res["data"][0].clone())?;
         Ok(song)
     }
 
